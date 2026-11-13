@@ -1,21 +1,21 @@
-package com.example.tenantmanagementsystem
+package com.example.tenantmanagementsystem.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tenantmanagementsystem.databinding.ActivityLoginBinding
+import com.example.tenantmanagementsystem.databinding.ActivityRegisterBinding
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.loginButton.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
 
@@ -24,11 +24,16 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // This is Part 6: send the email to MainActivity
-            val intent = Intent(this, MainActivity::class.java)
+            // Back to Login, with the email filled in
+            val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("EMAIL", email)
             startActivity(intent)
-            finish() // so Back doesn't return to Login
+            finish()
+        }
+
+        binding.loginLinkTextView.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 }
