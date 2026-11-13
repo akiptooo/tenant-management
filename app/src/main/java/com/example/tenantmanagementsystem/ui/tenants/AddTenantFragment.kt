@@ -1,3 +1,4 @@
+
 package com.example.tenantmanagementsystem.ui.tenants
 
 import android.os.Bundle
@@ -34,19 +35,21 @@ class AddTenantFragment : Fragment() {
             val rent = binding.rentEditText.text.toString().trim()
 
             if (name.isEmpty() || phone.isEmpty() || rent.isEmpty()) {
-                // A Fragment is not a Context, so use requireContext()
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Please fill in all fields",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
             val tenant = Tenant(name, phone, rent)
 
-            // Add to the shared list (Dashboard and View Tenants read it)
             TenantRepository.addTenant(tenant)
 
-            // Safe Args: this function requires a Tenant
             val action = AddTenantFragmentDirections
-                .actionAddTenantFragmentToViewTenantsFragment(tenant)
+                .actionAddTenantFragmentToViewTenantsFragment()
+
             findNavController().navigate(action)
         }
     }
