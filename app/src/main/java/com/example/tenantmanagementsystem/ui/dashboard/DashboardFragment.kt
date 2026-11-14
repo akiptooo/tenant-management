@@ -1,5 +1,7 @@
 package com.example.tenantmanagementsystem.ui.dashboard
 
+import androidx.fragment.app.activityViewModels
+import com.example.tenantmanagementsystem.ui.viewmodel.TenantViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,13 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.tenantmanagementsystem.data.repository.TenantRepository
 import com.example.tenantmanagementsystem.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+    // The SHARED ViewModel: every Fragment in MainActivity gets the SAME one
+    private val viewModel: TenantViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +37,10 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("TENANT_LIFECYCLE", "   DashboardFragment: onViewCreated")
 
-        val tenantCount = TenantRepository.tenants.size
-        val totalRent = TenantRepository.totalRent()
-
-        binding.tenantCountTextView.text = "Tenants\n$tenantCount"
-        binding.totalRentTextView.text = "Total rent\nKSh %,.0f".format(totalRent)
+        // DATA BINDING: give the ViewModel to <variable name="viewModel">
+        binding.viewModel = viewModel
+// Let the layout WATCH LiveData (otherwise the text never updates)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.addTenantButton.setOnClickListener {
             val action = DashboardFragmentDirections.actionDashboardFragmentToAddTenantFragment()
